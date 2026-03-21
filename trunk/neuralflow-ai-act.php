@@ -3,7 +3,7 @@
  * Plugin Name: NeuralFlow AI Act Badge
  * Plugin URI: https://neuralflow.mylurch.com
  * Description: AI transparency badge for EU AI Act Article 50 compliance. Adds a visible badge, JSON-LD metadata, and meta tags to your website. Zero cookies. Zero tracking. 4.8 KB.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: NeuralFlow (Olaf Mergili)
  * Author URI: https://mylurch.com
  * License: MIT
@@ -23,7 +23,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('NFAIACT_VERSION', '1.0.1');
+define('NFAIACT_VERSION', '1.0.2');
 define('NFAIACT_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('NFAIACT_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -192,35 +192,17 @@ function nfaiact_inject_badge() {
     $lang = get_option('nfaiact_lang', 'de');
     $position = get_option('nfaiact_position', 'bottom-right');
 
-    // Badge script from jsDelivr CDN (no self-hosting needed)
-    wp_enqueue_script(
-        'neuralflow-ai-act-badge',
-        'https://cdn.jsdelivr.net/npm/@neuralflow/ai-act/dist/badge.min.js',
-        [],
-        NFAIACT_VERSION,
-        true
-    );
-
-    // Pass data attributes via inline script
-    wp_add_inline_script('neuralflow-ai-act-badge', '', 'before');
-
-    // Add data attributes to the script tag
-    add_filter('script_loader_tag', function ($tag, $handle) use ($operator, $ai_system, $lang, $position) {
-        if ($handle !== 'neuralflow-ai-act-badge') {
-            return $tag;
-        }
-        return str_replace(
-            ' src=',
-            sprintf(
-                ' data-operator="%s" data-ai-system="%s" data-lang="%s" data-position="%s" src=',
-                esc_attr($operator),
-                esc_attr($ai_system),
-                esc_attr($lang),
-                esc_attr($position)
-            ),
-            $tag
+    // Direct script output in footer — avoids WordPress defer/async issues
+    add_action('wp_footer', function () use ($operator, $ai_system, $lang, $position) {
+        printf(
+            '<script src="%s" data-operator="%s" data-ai-system="%s" data-lang="%s" data-position="%s"></script>' . "\n",
+            'https://cdn.jsdelivr.net/npm/@neuralflow/ai-act/dist/badge.min.js',
+            esc_attr($operator),
+            esc_attr($ai_system),
+            esc_attr($lang),
+            esc_attr($position)
         );
-    }, 10, 2);
+    }, 99);
 }
 add_action('wp_enqueue_scripts', 'nfaiact_inject_badge');
 
