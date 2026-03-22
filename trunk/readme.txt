@@ -1,14 +1,14 @@
 === NeuralFlow AI Act Badge ===
 Contributors: omergili
-Tags: ai-act, eu-ai-act, transparency, compliance, ai-disclosure, gdpr, badge, article-50
+Tags: ai-act, transparency, compliance, ai-disclosure, badge
 Requires at least: 5.0
 Tested up to: 6.7
+Stable tag: 2.0.0
 Requires PHP: 7.4
-Stable tag: 1.0.0
-License: MIT
-License URI: https://opensource.org/licenses/MIT
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-AI transparency badge for EU AI Act Article 50 compliance. One click. Zero cookies.
+AI transparency badge for EU AI Act Article 50 compliance. One click. Zero cookies. Zero tracking.
 
 == Description ==
 
@@ -20,10 +20,11 @@ This plugin adds a compliant AI transparency badge to your WordPress site:
 
 * **Visible badge** — "AI Transparent" / "KI-Transparent" in configurable position
 * **Disclosure popup** — click for full Article 50 compliant text
-* **JSON-LD metadata** — schema.org structured data in `<head>` (server-side, SEO-friendly)
-* **HTML meta tags** — `ai-generated`, `ai-system`, `ai-operator`
+* **JSON-LD metadata** — schema.org structured data in head (server-side, SEO-friendly)
+* **HTML meta tags** — ai-generated, ai-system, ai-operator
 * **Zero cookies** — no tracking, no personal data, GDPR friendly
-* **4.8 KB** — tiny footprint, served from jsDelivr CDN
+* **5 KB** — tiny footprint, served locally (no external requests)
+* **Cache-plugin compatible** — works with LiteSpeed, WP Rocket, Autoptimize, Cloudflare
 
 = How it works =
 
@@ -34,19 +35,15 @@ This plugin adds a compliant AI transparency badge to your WordPress site:
 
 The badge appears on all pages. Metadata is injected server-side (visible to search engines without JavaScript).
 
-= What it does NOT do =
+= Privacy =
 
-* No cookies
-* No tracking
-* No external requests except loading the badge script from jsDelivr CDN
-* No personal data collection
-* No account required
+This plugin makes **no external HTTP requests**. All JavaScript is served locally from within the plugin directory. No cookies are set. No personal data is collected or transmitted. No account required.
 
 = Open Source =
 
-This plugin is MIT licensed. The badge widget is open source: [GitHub](https://github.com/omergili/neuralflow).
+This plugin is GPL-2.0-or-later licensed. Source code: [GitHub](https://github.com/omergili/neuralflow-wp).
 
-Built and operated by AI (Claude Opus 4.6). Owner: Olaf Mergili.
+The badge widget is part of the [@neuralflow/ai-act](https://github.com/omergili/neuralflow) open source project (MIT license).
 
 == Installation ==
 
@@ -60,19 +57,27 @@ Built and operated by AI (Claude Opus 4.6). Owner: Olaf Mergili.
 
 = Is this plugin free? =
 
-Yes, completely free and open source (MIT license). No premium tier, no upsells.
+Yes, completely free and open source (GPL-2.0-or-later). No premium tier, no upsells.
 
 = Does it set cookies? =
 
 No. Zero cookies. The badge runs entirely client-side with no data collection.
 
+= Does it make external requests? =
+
+No. All JavaScript is bundled locally in the plugin. No CDN, no analytics, no tracking.
+
 = Does it slow down my site? =
 
-No. The badge script is 4.8 KB (minified), loaded asynchronously from jsDelivr CDN. It has zero dependencies.
+No. The badge script is 5 KB (minified) and loaded from your own server. It has zero dependencies.
+
+= Does it work with caching plugins? =
+
+Yes. Tested with LiteSpeed Cache, WP Rocket, Autoptimize, and Cloudflare. The script is automatically excluded from JS optimization to ensure compatibility.
 
 = What AI systems should I list? =
 
-Any AI system you use to create or assist content on your website. Examples: ChatGPT, Claude, Midjourney, DALL-E, Gemini, Copilot. If you use multiple, separate them with commas.
+Any AI system you use to create or assist content on your website. Examples: ChatGPT, Claude, Midjourney, DALL-E, Gemini, Copilot. Multiple systems: separate with commas.
 
 = Is this legally sufficient for AI Act compliance? =
 
@@ -82,10 +87,6 @@ This plugin helps with the technical implementation of transparency disclosure. 
 
 Article 50 transparency obligations apply from August 2, 2026.
 
-= What is the penalty for non-compliance? =
-
-Up to EUR 15 million or 3% of annual worldwide turnover (whichever is higher).
-
 == Screenshots ==
 
 1. Settings page — configure your company name, AI system, language, and badge position
@@ -94,16 +95,22 @@ Up to EUR 15 million or 3% of annual worldwide turnover (whichever is higher).
 
 == Changelog ==
 
+= 2.0.0 =
+* JavaScript served locally (no external CDN requests)
+* License changed to GPL-2.0-or-later for WordPress.org compatibility
+* Cache-plugin compatibility (LiteSpeed, WP Rocket, Autoptimize, Cloudflare)
+* Proper wp_enqueue_script with script_loader_tag filter
+* Uninstall hook for clean removal
+* WordPress coding standards
+
 = 1.0.0 =
 * Initial release
 * Visible AI transparency badge (DE/EN)
 * JSON-LD metadata injection (server-side)
 * HTML meta tags (ai-generated, ai-system, ai-operator)
-* Settings page with live preview info
-* Position selector (4 corners)
-* Language selector (German/English)
+* Settings page with position and language selector
 
 == Upgrade Notice ==
 
-= 1.0.0 =
-Initial release. Install before August 2, 2026 to be ready for EU AI Act enforcement.
+= 2.0.0 =
+Major update: JS now served locally, cache-plugin compatible, GPL licensed. Install before August 2, 2026.
