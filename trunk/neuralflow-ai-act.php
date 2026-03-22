@@ -3,7 +3,7 @@
  * Plugin Name: NeuralFlow AI Act Badge
  * Plugin URI: https://neuralflow.mylurch.com
  * Description: AI transparency badge for EU AI Act Article 50 compliance. Adds a visible badge, JSON-LD metadata, and meta tags to your website. Zero cookies. Zero tracking. 4.8 KB.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: NeuralFlow (Olaf Mergili)
  * Author URI: https://mylurch.com
  * License: MIT
@@ -23,7 +23,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('NFAIACT_VERSION', '1.1.0');
+define('NFAIACT_VERSION', '1.1.1');
 define('NFAIACT_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('NFAIACT_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -200,7 +200,7 @@ function nfaiact_inject_badge() {
     add_action('wp_footer', function () use ($operator, $ai_system, $lang, $position) {
         printf(
             '<script src="%s" data-operator="%s" data-ai-system="%s" data-lang="%s" data-position="%s" data-no-meta="1"></script>' . "\n",
-            'https://cdn.jsdelivr.net/npm/@neuralflow/ai-act/dist/badge.min.js',
+            'https://cdn.jsdelivr.net/npm/@neuralflow/ai-act@0.1.5/dist/badge.min.js',
             esc_attr($operator),
             esc_attr($ai_system),
             esc_attr($lang),
