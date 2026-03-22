@@ -3,7 +3,7 @@
  * Plugin Name: NeuralFlow AI Act Badge
  * Plugin URI: https://neuralflow.mylurch.com
  * Description: AI transparency badge for EU AI Act Article 50 compliance. Adds a visible badge, JSON-LD metadata, and meta tags to your website. Zero cookies. Zero tracking. 4.8 KB.
- * Version: 1.0.2
+ * Version: 1.1.0
  * Author: NeuralFlow (Olaf Mergili)
  * Author URI: https://mylurch.com
  * License: MIT
@@ -23,7 +23,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('NFAIACT_VERSION', '1.0.2');
+define('NFAIACT_VERSION', '1.1.0');
 define('NFAIACT_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('NFAIACT_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -67,6 +67,9 @@ function nfaiact_register_settings() {
     ]);
     register_setting('nfaiact_settings', 'nfaiact_enabled', [
         'type' => 'boolean',
+        'sanitize_callback' => function ($value) {
+            return (bool) $value;
+        },
         'default' => true,
     ]);
 }
@@ -193,9 +196,10 @@ function nfaiact_inject_badge() {
     $position = get_option('nfaiact_position', 'bottom-right');
 
     // Direct script output in footer — avoids WordPress defer/async issues
+    // data-no-meta="1" prevents duplicate metadata (already injected server-side in wp_head)
     add_action('wp_footer', function () use ($operator, $ai_system, $lang, $position) {
         printf(
-            '<script src="%s" data-operator="%s" data-ai-system="%s" data-lang="%s" data-position="%s"></script>' . "\n",
+            '<script src="%s" data-operator="%s" data-ai-system="%s" data-lang="%s" data-position="%s" data-no-meta="1"></script>' . "\n",
             'https://cdn.jsdelivr.net/npm/@neuralflow/ai-act/dist/badge.min.js',
             esc_attr($operator),
             esc_attr($ai_system),

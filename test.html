@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WP Plugin Test — NeuralFlow AI Act Badge</title>
+
+    <!-- Simulates nfaiact_inject_metadata() in wp_head -->
+    <meta name="ai-generated" content="true">
+    <meta name="ai-system" content="Claude">
+    <meta name="ai-operator" content="Test GmbH">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","publisher":{"@type":"Organization","name":"Test GmbH"},"instrument":{"@type":"SoftwareApplication","name":"Claude","applicationCategory":"Artificial Intelligence"}}</script>
+</head>
+<body>
+    <h1>WordPress Plugin Test</h1>
+    <p>Diese Seite simuliert das WordPress-Frontend-Output des NeuralFlow AI Act Badge Plugins.</p>
+
+    <h2>Erwartetes Verhalten:</h2>
+    <ul>
+        <li>Badge-Button unten rechts sichtbar ("KI-Transparent")</li>
+        <li>Klick auf Badge öffnet Disclosure-Popup</li>
+        <li>Nur 1x JSON-LD im Head (server-seitig, kein Duplikat durch badge.js)</li>
+        <li>Nur 1x Meta-Tags im Head (server-seitig, kein Duplikat durch badge.js)</li>
+    </ul>
+
+    <h2>Test-Ergebnis:</h2>
+    <pre id="result">Wird automatisch geprüft...</pre>
+
+    <!-- Simulates nfaiact_inject_badge() output in wp_footer -->
+    <!-- Using local build for testing, production uses CDN -->
+    <script src="../neuralflow/dist/badge.min.js" data-operator="Test GmbH" data-ai-system="Claude" data-lang="de" data-position="bottom-right" data-no-meta="1"></script>
+
+    <script>
+    // Automated verification
+    window.addEventListener('load', function() {
+        const results = [];
+        let pass = true;
+
+        // Test 1: Badge rendered
+        const badge = document.querySelector('.nf-ai-badge');
+        if (badge) {
+            results.push('PASS: Badge-Element gerendert');
+        } else {
+            results.push('FAIL: Badge-Element fehlt');
+            pass = false;
+        }
+
+        // Test 2: Badge text correct
+        const btn = document.querySelector('.nf-ai-badge-btn');
+        if (btn && btn.textContent.includes('KI-Transparent')) {
+            results.push('PASS: Text "KI-Transparent" korrekt');
+        } else {
+            results.push('FAIL: Text fehlt oder falsch: ' + (btn?.textContent || 'null'));
+            pass = false;
+        }
+
+        // Test 3: No duplicate JSON-LD
+        const jsonLds = document.querySelectorAll('script[type="application/ld+json"]');
+        if (jsonLds.length === 1) {
+            results.push('PASS: Genau 1x JSON-LD (kein Duplikat)');
+        } else {
+            results.push('FAIL: ' + jsonLds.length + 'x JSON-LD gefunden (erwartet: 1)');
+            pass = false;
+        }
+
+        // Test 4: No duplicate meta tags
+        const aiGenMeta = document.querySelectorAll('meta[name="ai-generated"]');
+        if (aiGenMeta.length === 1) {
+            results.push('PASS: Genau 1x ai-generated Meta-Tag');
+        } else {
+            results.push('FAIL: ' + aiGenMeta.length + 'x ai-generated (erwartet: 1)');
+            pass = false;
+        }
+
+        // Test 5: Popup exists
+        const popup = document.querySelector('.nf-ai-popup');
+        if (popup) {
+            results.push('PASS: Disclosure-Popup im DOM');
+        } else {
+            results.push('FAIL: Disclosure-Popup fehlt');
+            pass = false;
+        }
+
+        // Test 6: Position correct
+        if (badge && badge.getAttribute('data-pos') === 'bottom-right') {
+            results.push('PASS: Position bottom-right korrekt');
+        } else {
+            results.push('FAIL: Position falsch');
+            pass = false;
+        }
+
+        const resultEl = document.getElementById('result');
+        resultEl.textContent = (pass ? 'ALLE TESTS BESTANDEN\n\n' : 'FEHLER GEFUNDEN\n\n') + results.join('\n');
+        resultEl.style.color = pass ? '#2e7d32' : '#c62828';
+        resultEl.style.fontWeight = 'bold';
+    });
+    </script>
+</body>
+</html>
